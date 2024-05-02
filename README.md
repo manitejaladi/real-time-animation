@@ -1,6 +1,6 @@
 
 
-# First Order Motion Model for Image Animation
+# Real time animaton
 
 This repository contains the models and checkpoints for our project [First Order Motion Model for Image Animation] by Aliaksandr Siarohin, [Stéphane Lathuilière](http://stelat.eu), [Sergey Tulyakov](http://stulyakov.com), [Elisa Ricci](http://elisaricci.eu/) and [Nicu Sebe](http://disi.unitn.it/~sebe/). 
 
