@@ -1,22 +1,12 @@
-<b>!!! Check out our new [paper](https://arxiv.org/pdf/2104.11280.pdf) and [framework](https://github.com/snap-research/articulated-animation) improved for articulated objects</b>
+
 
 # First Order Motion Model for Image Animation
 
-This repository contains the source code for the paper [First Order Motion Model for Image Animation](https://papers.nips.cc/paper/8935-first-order-motion-model-for-image-animation) by Aliaksandr Siarohin, [Stéphane Lathuilière](http://stelat.eu), [Sergey Tulyakov](http://stulyakov.com), [Elisa Ricci](http://elisaricci.eu/) and [Nicu Sebe](http://disi.unitn.it/~sebe/). 
+This repository contains the models and checkpoints for our project [First Order Motion Model for Image Animation] by Aliaksandr Siarohin, [Stéphane Lathuilière](http://stelat.eu), [Sergey Tulyakov](http://stulyakov.com), [Elisa Ricci](http://elisaricci.eu/) and [Nicu Sebe](http://disi.unitn.it/~sebe/). 
 
 [Hugging Face Spaces](https://huggingface.co/spaces/abhishek/first-order-motion-model)
 
-## Example animations
-
-The videos on the left show the driving videos. The first row on the right for each dataset shows the source videos. The bottom row contains the animated sequences with motion transferred from the driving video and object taken from the source image. We trained a separate network for each task.
-
-### VoxCeleb Dataset
-![Screenshot](sup-mat/vox-teaser.gif)
-### Fashion Dataset
-![Screenshot](sup-mat/fashion-teaser.gif)
-### MGIF Dataset
-![Screenshot](sup-mat/mgif-teaser.gif)
-
+To install use the following:
 
 ### Installation
 
@@ -47,47 +37,7 @@ cd face-alignment
 pip install -r requirements.txt
 python setup.py install
 ```
-
-### Animation demo with Docker
-
-If you are having trouble getting the demo to work because of library compatibility issues,
-and you're running Linux, you might try running it inside a Docker container, which would
-give you better control over the execution environment.
-
-Requirements: Docker 19.03+ and [nvidia-docker](https://github.com/NVIDIA/nvidia-docker)
-installed and able to successfully run the `nvidia-docker` usage tests.
-
-We'll first build the container.
-
-```
-docker build -t first-order-model .
-```
-
-And now that we have the container available locally, we can use it to run the demo.
-
-```
-docker run -it --rm --gpus all \
-       -v $HOME/first-order-model:/app first-order-model \
-       python3 demo.py --config config/vox-256.yaml \
-           --driving_video driving.mp4 \
-           --source_image source.png  \ 
-           --checkpoint vox-cpk.pth.tar \ 
-           --result_video result.mp4 \
-           --relative --adapt_scale
-```
-
-### Colab Demo 
-
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/AliaksandrSiarohin/first-order-model/blob/master/demo.ipynb) [![Open in Kaggle](https://kaggle.com/static/images/open-in-kaggle.svg)](https://kaggle.com/kernels/welcome?src=https://github.com/AliaksandrSiarohin/first-order-model/blob/master/demo.ipynb)
-
-@graphemecluster prepared a GUI demo for the Google Colab. It also works in Kaggle. For the source code, see [```demo.ipynb```](https://github.com/AliaksandrSiarohin/first-order-model/blob/master/demo.ipynb).
-
-For the old demo, see [```old_demo.ipynb```](https://github.com/AliaksandrSiarohin/first-order-model/blob/master/old_demo.ipynb).
-
-### Face-swap
-It is possible to modify the method to perform face-swap using supervised segmentation masks.
-![Screenshot](sup-mat/face-swap.gif)
-For both unsupervised and supervised video editing, such as face-swap, please refer to [Motion Co-Segmentation](https://github.com/AliaksandrSiarohin/motion-cosegmentation).
+ or run demo.ipynb using any GPU instance in collab.
 
 
 ### Training
@@ -113,35 +63,7 @@ the ```reconstruction``` subfolder will be created in the checkpoint folder.
 The generated video will be stored to this folder, also generated videos will be stored in ```png``` subfolder in loss-less '.png' format for evaluation.
 Instructions for computing metrics from the paper can be found: https://github.com/AliaksandrSiarohin/pose-evaluation.
 
-### Image animation
-
-In order to animate videos run:
-```
-CUDA_VISIBLE_DEVICES=0 python run.py --config config/dataset_name.yaml --mode animate --checkpoint path/to/checkpoint
-```
-You will need to specify the path to the checkpoint,
-the ```animation``` subfolder will be created in the same folder as the checkpoint.
-You can find the generated video there and its loss-less version in the ```png``` subfolder.
-By default video from test set will be randomly paired, but you can specify the "source,driving" pairs in the corresponding ```.csv``` files. The path to this file should be specified in corresponding ```.yaml``` file in pairs_list setting.
-
-There are 2 different ways of performing animation:
-by using **absolute** keypoint locations or by using **relative** keypoint locations.
-
-1) <i>Animation using absolute coordinates:</i> the animation is performed using the absolute postions of the driving video and appearance of the source image.
-In this way there are no specific requirements for the driving video and source appearance that is used.
-However this usually leads to poor performance since unrelevant details such as shape is transfered.
-Check animate parameters in ```taichi-256.yaml``` to enable this mode.
-
-<img src="sup-mat/absolute-demo.gif" width="512"> 
-
-2) <i>Animation using relative coordinates:</i> from the driving video we first estimate the relative movement of each keypoint,
-then we add this movement to the absolute position of keypoints in the source image.
-This keypoint along with source image is used for animation. This usually leads to better performance, however this requires
-that the object in the first frame of the video and in the source image have the same pose
-
-<img src="sup-mat/relative-demo.gif" width="512"> 
-
-
+Datasets USed:
 ### Datasets
 
 1) **Bair**. This dataset can be directly [downloaded](https://yadi.sk/d/Rr-fjn-PdmmqeA).
@@ -165,16 +87,4 @@ We recommend the later, for each video make a separate folder with all the frame
 
 3) Create a config ```config/dataset_name.yaml```, in dataset_params specify the root dir the ```root_dir:  data/dataset_name```. Also adjust the number of epoch in train_params.
 
-#### Additional notes
-
-Citation:
-
-```
-@InProceedings{Siarohin_2019_NeurIPS,
-  author={Siarohin, Aliaksandr and Lathuilière, Stéphane and Tulyakov, Sergey and Ricci, Elisa and Sebe, Nicu},
-  title={First Order Motion Model for Image Animation},
-  booktitle = {Conference on Neural Information Processing Systems (NeurIPS)},
-  month = {December},
-  year = {2019}
-}
-```
+4) Use the demo again to see the results.
