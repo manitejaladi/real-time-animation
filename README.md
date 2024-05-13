@@ -2,7 +2,7 @@
 
 # Real time animaton
 
-This repository contains the models and checkpoints for our project [First Order Motion Model for Image Animation] by Aliaksandr Siarohin, [Stéphane Lathuilière](http://stelat.eu), [Sergey Tulyakov](http://stulyakov.com), [Elisa Ricci](http://elisaricci.eu/) and [Nicu Sebe](http://disi.unitn.it/~sebe/). 
+This repository contains the models and checkpoints for our project [First Order Motion Model for Image Animation] by Maniteja Ladi, Teja Vineeth Reddy and Deepak Rajput
 
 [Hugging Face Spaces](https://huggingface.co/spaces/abhishek/first-order-motion-model)
 
